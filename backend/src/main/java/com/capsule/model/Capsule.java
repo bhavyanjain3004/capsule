@@ -11,7 +11,6 @@ import java.util.UUID;
 @Entity
 @Table(name = "capsule")
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Capsule {
@@ -42,7 +41,6 @@ public class Capsule {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    @Builder.Default
     private CapsuleStatus status = CapsuleStatus.SEALED;
 
     @Column(name = "ai_reflection", columnDefinition = "TEXT")
@@ -61,21 +59,19 @@ public class Capsule {
     private LocalDateTime deletedAt;
 
     @OneToMany(mappedBy = "capsule", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @Builder.Default
     private List<CapsuleRecipient> recipients = new ArrayList<>();
 
     @OneToMany(mappedBy = "capsule", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @Builder.Default
     private List<CapsuleFile> files = new ArrayList<>();
 
     @OneToMany(mappedBy = "capsule", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @Builder.Default
     private List<CapsuleDoodle> doodles = new ArrayList<>();
 
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
         updatedAt = LocalDateTime.now();
+        if (token == null) token = UUID.randomUUID();
     }
 
     @PreUpdate
@@ -83,12 +79,71 @@ public class Capsule {
         updatedAt = LocalDateTime.now();
     }
 
-    // Manual getter/setter to resolve Lombok issues with newer Java versions
-    public CapsuleStatus getStatus() {
-        return status;
+    // Manual Getters and Setters
+    public Long getId() { return id; }
+    public UUID getToken() { return token; }
+    public void setToken(UUID token) { this.token = token; }
+    public String getEncryptedSecret() { return encryptedSecret; }
+    public void setEncryptedSecret(String encryptedSecret) { this.encryptedSecret = encryptedSecret; }
+    public String getEncryptionKeyHash() { return encryptionKeyHash; }
+    public void setEncryptionKeyHash(String encryptionKeyHash) { this.encryptionKeyHash = encryptionKeyHash; }
+    public String getCreatorEmail() { return creatorEmail; }
+    public void setCreatorEmail(String creatorEmail) { this.creatorEmail = creatorEmail; }
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+    public String getEncryptedContent() { return encryptedContent; }
+    public void setEncryptedContent(String encryptedContent) { this.encryptedContent = encryptedContent; }
+    public LocalDateTime getUnlockAt() { return unlockAt; }
+    public void setUnlockAt(LocalDateTime unlockAt) { this.unlockAt = unlockAt; }
+    public CapsuleStatus getStatus() { return status; }
+    public void setStatus(CapsuleStatus status) { this.status = status; }
+    public String getAiReflection() { return aiReflection; }
+    public void setAiReflection(String aiReflection) { this.aiReflection = aiReflection; }
+    public String getBackgroundTexture() { return backgroundTexture; }
+    public void setBackgroundTexture(String backgroundTexture) { this.backgroundTexture = backgroundTexture; }
+    public List<CapsuleRecipient> getRecipients() { return recipients; }
+    public List<CapsuleFile> getFiles() { return files; }
+    public List<CapsuleDoodle> getDoodles() { return doodles; }
+    public LocalDateTime getDeletedAt() { return deletedAt; }
+    public void setDeletedAt(LocalDateTime deletedAt) { this.deletedAt = deletedAt; }
+
+    public static CapsuleBuilder builder() {
+        return new CapsuleBuilder();
     }
 
-    public void setStatus(CapsuleStatus status) {
-        this.status = status;
+    public static class CapsuleBuilder {
+        private UUID token;
+        private String creatorEmail;
+        private String title;
+        private String encryptedSecret;
+        private String encryptionKeyHash;
+        private String encryptedContent;
+        private LocalDateTime unlockAt;
+        private String backgroundTexture;
+        private CapsuleStatus status;
+
+        public CapsuleBuilder token(UUID token) { this.token = token; return this; }
+        public CapsuleBuilder creatorEmail(String creatorEmail) { this.creatorEmail = creatorEmail; return this; }
+        public CapsuleBuilder title(String title) { this.title = title; return this; }
+        public CapsuleBuilder encryptedSecret(String encryptedSecret) { this.encryptedSecret = encryptedSecret; return this; }
+        public CapsuleBuilder encryptionKeyHash(String encryptionKeyHash) { this.encryptionKeyHash = encryptionKeyHash; return this; }
+        public CapsuleBuilder encryptedContent(String encryptedContent) { this.encryptedContent = encryptedContent; return this; }
+        public CapsuleBuilder unlockAt(LocalDateTime unlockAt) { this.unlockAt = unlockAt; return this; }
+        public CapsuleBuilder backgroundTexture(String backgroundTexture) { this.backgroundTexture = backgroundTexture; return this; }
+        public CapsuleBuilder status(CapsuleStatus status) { this.status = status; return this; }
+
+        public Capsule build() {
+            Capsule capsule = new Capsule();
+            capsule.setToken(token);
+            capsule.setCreatorEmail(creatorEmail);
+            capsule.setTitle(title);
+            capsule.setEncryptedSecret(encryptedSecret);
+            capsule.setEncryptionKeyHash(encryptionKeyHash);
+            capsule.setEncryptedContent(encryptedContent);
+            capsule.setUnlockAt(unlockAt);
+            capsule.setBackgroundTexture(backgroundTexture);
+            if (status != null) capsule.setStatus(status);
+            return capsule;
+        }
     }
 }

@@ -11,4 +11,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class DoodleResponse {
     private Long doodleId;
+
+    public DoodleResponse(Long doodleId) {
+        this.doodleId = doodleId;
+    }
 }

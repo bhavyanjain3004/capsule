@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class VerifyRequest {
-    @NotBlank(message = "Email is required for verification")
+public class RecoverRequest {
+    @NotBlank(message = "Email is required for recovery")
     @Email(message = "Invalid email format")
     private String email;
 

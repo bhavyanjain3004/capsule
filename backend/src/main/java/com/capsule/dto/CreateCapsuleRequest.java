@@ -35,4 +35,12 @@ public class CreateCapsuleRequest {
     private List<@Email(message = "Invalid recipient email format") String> recipients;
 
     private String backgroundTexture;
+
+    // Manual getters to bypass Lombok issues
+    public String getCreatorEmail() { return creatorEmail; }
+    public String getTitle() { return title; }
+    public String getContent() { return content; }
+    public LocalDateTime getUnlockAt() { return unlockAt; }
+    public List<String> getRecipients() { return recipients; }
+    public String getBackgroundTexture() { return backgroundTexture; }
 }

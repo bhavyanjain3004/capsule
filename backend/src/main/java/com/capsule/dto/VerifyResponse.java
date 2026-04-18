@@ -17,4 +17,12 @@ public class VerifyResponse {
     private List<DoodleDto> doodles;
     private String backgroundTexture;
     private String aiReflection;
+
+    public VerifyResponse(String content, List<FileDto> files, List<DoodleDto> doodles, String backgroundTexture, String aiReflection) {
+        this.content = content;
+        this.files = files;
+        this.doodles = doodles;
+        this.backgroundTexture = backgroundTexture;
+        this.aiReflection = aiReflection;
+    }
 }

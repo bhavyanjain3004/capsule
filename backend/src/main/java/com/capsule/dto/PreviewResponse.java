@@ -16,4 +16,10 @@ public class PreviewResponse {
     private CapsuleStatus status;
     private LocalDateTime unlocksAt;
     private String title;
+
+    public PreviewResponse(CapsuleStatus status, LocalDateTime unlocksAt, String title) {
+        this.status = status;
+        this.unlocksAt = unlocksAt;
+        this.title = title;
+    }
 }

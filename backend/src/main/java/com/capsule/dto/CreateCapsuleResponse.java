@@ -14,4 +14,9 @@ import java.util.UUID;
 public class CreateCapsuleResponse {
     private UUID token;
     private String capsuleUrl;
+
+    public CreateCapsuleResponse(UUID token, String capsuleUrl) {
+        this.token = token;
+        this.capsuleUrl = capsuleUrl;
+    }
 }

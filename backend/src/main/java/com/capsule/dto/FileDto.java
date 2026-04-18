@@ -12,4 +12,9 @@ import lombok.NoArgsConstructor;
 public class FileDto {
     private String fileUrl;
     private String fileType;
+
+    public FileDto(String fileUrl, String fileType) {
+        this.fileUrl = fileUrl;
+        this.fileType = fileType;
+    }
 }

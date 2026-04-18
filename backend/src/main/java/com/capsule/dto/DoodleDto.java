@@ -18,4 +18,15 @@ public class DoodleDto {
     private Double positionY;
     private Double scale;
     private Double rotation;
+
+    public DoodleDto(Long id, String type, String stickerId, String svgData, Double positionX, Double positionY, Double scale, Double rotation) {
+        this.id = id;
+        this.type = type;
+        this.stickerId = stickerId;
+        this.svgData = svgData;
+        this.positionX = positionX;
+        this.positionY = positionY;
+        this.scale = scale;
+        this.rotation = rotation;
+    }
 }
