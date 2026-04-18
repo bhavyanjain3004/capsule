@@ -11,7 +11,6 @@ import com.capsule.repository.CapsuleRecipientRepository;
 import com.capsule.repository.CapsuleRepository;
 import com.capsule.util.AESUtil;
 import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,7 +24,6 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 public class CapsuleService {
 
     private final CapsuleRepository capsuleRepo;
@@ -43,9 +41,6 @@ public class CapsuleService {
 
     @Value("${capsule.base-url}")
     private String baseUrl;
-
-    @Value("${capsule.presigned-url-expiry-minutes:15}")
-    private int presignedUrlExpiryMinutes;
 
     public CapsuleService(
             CapsuleRepository capsuleRepo,
@@ -111,6 +106,7 @@ public class CapsuleService {
             .creatorEmail(request.getCreatorEmail())
             .title(request.getTitle())
             .encryptedContent(encryptedContent)
+            .encryptedCanvasJson(encryptCanvasJson(request.getCanvasJson(), encryptionSecret))
             .unlockAt(request.getUnlockAt())
             .status(CapsuleStatus.SEALED)
             .backgroundTexture(request.getBackgroundTexture())
@@ -219,17 +215,22 @@ public class CapsuleService {
             .findByCapsuleAndEmail(capsule, email)
             .orElseThrow(() -> new AccessDeniedException("Access denied"));
 
-        // Decrypt content
+        // Decrypt content and canvas
         String decryptedContent = null;
-        if (capsule.getEncryptedContent() != null) {
-            try {
-                String encryptionSecret = AESUtil.unwrapSecret(
-                    capsule.getEncryptedSecret(), masterKey);
-                SecretKey contentKey = AESUtil.deriveKey(encryptionSecret);
+        String decryptedCanvas = null;
+        try {
+            String encryptionSecret = AESUtil.unwrapSecret(
+                capsule.getEncryptedSecret(), masterKey);
+            SecretKey contentKey = AESUtil.deriveKey(encryptionSecret);
+            
+            if (capsule.getEncryptedContent() != null) {
                 decryptedContent = AESUtil.decrypt(capsule.getEncryptedContent(), contentKey);
-            } catch (Exception e) {
-                throw new RuntimeException("Decryption failed", e);
             }
+            if (capsule.getEncryptedCanvasJson() != null) {
+                decryptedCanvas = AESUtil.decrypt(capsule.getEncryptedCanvasJson(), contentKey);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Decryption failed", e);
         }
 
         // Fetch files and generate pre-signed URLs
@@ -266,6 +267,7 @@ public class CapsuleService {
             fileDtos,
             doodleDtos,
             capsule.getBackgroundTexture(),
+            decryptedCanvas,
             capsule.getAiReflection()
         );
     }
@@ -309,6 +311,16 @@ public class CapsuleService {
     // ═══════════════════════════════════════
     // HELPER
     // ═══════════════════════════════════════
+    private String encryptCanvasJson(String json, String secret) {
+        if (json == null || json.isBlank()) return null;
+        try {
+            SecretKey key = AESUtil.deriveKey(secret);
+            return AESUtil.encrypt(json, key);
+        } catch (Exception e) {
+            throw new RuntimeException("Canvas encryption failed", e);
+        }
+    }
+
     private Capsule findByTokenOrThrow(UUID token) {
         Capsule capsule = capsuleRepo.findByToken(token)
             .orElseThrow(CapsuleNotFoundException::new);

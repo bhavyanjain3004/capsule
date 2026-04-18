@@ -1,22 +1,21 @@
 package com.capsule.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class CreateCapsuleResponse {
     private UUID token;
     private String capsuleUrl;
+
+    public CreateCapsuleResponse() {}
 
     public CreateCapsuleResponse(UUID token, String capsuleUrl) {
         this.token = token;
         this.capsuleUrl = capsuleUrl;
     }
+
+    public UUID getToken() { return token; }
+    public void setToken(UUID token) { this.token = token; }
+    public String getCapsuleUrl() { return capsuleUrl; }
+    public void setCapsuleUrl(String capsuleUrl) { this.capsuleUrl = capsuleUrl; }
 }

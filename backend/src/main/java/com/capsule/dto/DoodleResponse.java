@@ -1,18 +1,15 @@
 package com.capsule.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class DoodleResponse {
     private Long doodleId;
+
+    public DoodleResponse() {}
 
     public DoodleResponse(Long doodleId) {
         this.doodleId = doodleId;
     }
+
+    public Long getDoodleId() { return doodleId; }
+    public void setDoodleId(Long doodleId) { this.doodleId = doodleId; }
 }

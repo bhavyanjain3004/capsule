@@ -49,6 +49,9 @@ public class Capsule {
     @Column(name = "background_texture")
     private String backgroundTexture;
 
+    @Column(name = "encrypted_canvas_json", columnDefinition = "TEXT")
+    private String encryptedCanvasJson;
+
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
@@ -106,6 +109,8 @@ public class Capsule {
     public List<CapsuleDoodle> getDoodles() { return doodles; }
     public LocalDateTime getDeletedAt() { return deletedAt; }
     public void setDeletedAt(LocalDateTime deletedAt) { this.deletedAt = deletedAt; }
+    public String getEncryptedCanvasJson() { return encryptedCanvasJson; }
+    public void setEncryptedCanvasJson(String json) { this.encryptedCanvasJson = json; }
 
     public static CapsuleBuilder builder() {
         return new CapsuleBuilder();
@@ -120,6 +125,7 @@ public class Capsule {
         private String encryptedContent;
         private LocalDateTime unlockAt;
         private String backgroundTexture;
+        private String encryptedCanvasJson;
         private CapsuleStatus status;
 
         public CapsuleBuilder token(UUID token) { this.token = token; return this; }
@@ -130,6 +136,7 @@ public class Capsule {
         public CapsuleBuilder encryptedContent(String encryptedContent) { this.encryptedContent = encryptedContent; return this; }
         public CapsuleBuilder unlockAt(LocalDateTime unlockAt) { this.unlockAt = unlockAt; return this; }
         public CapsuleBuilder backgroundTexture(String backgroundTexture) { this.backgroundTexture = backgroundTexture; return this; }
+        public CapsuleBuilder encryptedCanvasJson(String json) { this.encryptedCanvasJson = json; return this; }
         public CapsuleBuilder status(CapsuleStatus status) { this.status = status; return this; }
 
         public Capsule build() {
@@ -142,6 +149,7 @@ public class Capsule {
             capsule.setEncryptedContent(encryptedContent);
             capsule.setUnlockAt(unlockAt);
             capsule.setBackgroundTexture(backgroundTexture);
+            capsule.setEncryptedCanvasJson(encryptedCanvasJson);
             if (status != null) capsule.setStatus(status);
             return capsule;
         }

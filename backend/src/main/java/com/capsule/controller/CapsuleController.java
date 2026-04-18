@@ -4,7 +4,6 @@ import com.capsule.dto.*;
 import com.capsule.service.CapsuleService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,7 +12,6 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/capsule")
-@RequiredArgsConstructor
 public class CapsuleController {
 
     private final CapsuleService capsuleService;

@@ -5,18 +5,9 @@ import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class CreateCapsuleRequest {
 
     @NotBlank(message = "Creator email is required")
@@ -35,6 +26,20 @@ public class CreateCapsuleRequest {
     private List<@Email(message = "Invalid recipient email format") String> recipients;
 
     private String backgroundTexture;
+    private String canvasJson;
+
+    public CreateCapsuleRequest() {}
+
+    public CreateCapsuleRequest(String creatorEmail, String title, String content, 
+                               LocalDateTime unlockAt, List<String> recipients, 
+                               String backgroundTexture) {
+        this.creatorEmail = creatorEmail;
+        this.title = title;
+        this.content = content;
+        this.unlockAt = unlockAt;
+        this.recipients = recipients;
+        this.backgroundTexture = backgroundTexture;
+    }
 
     // Manual getters to bypass Lombok issues
     public String getCreatorEmail() { return creatorEmail; }
@@ -43,4 +48,6 @@ public class CreateCapsuleRequest {
     public LocalDateTime getUnlockAt() { return unlockAt; }
     public List<String> getRecipients() { return recipients; }
     public String getBackgroundTexture() { return backgroundTexture; }
+    public String getCanvasJson() { return canvasJson; }
+    public void setCanvasJson(String canvasJson) { this.canvasJson = canvasJson; }
 }

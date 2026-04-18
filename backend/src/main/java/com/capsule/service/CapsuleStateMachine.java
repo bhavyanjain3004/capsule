@@ -13,8 +13,6 @@ import static com.capsule.model.CapsuleStatus.*;
 @Component
 public class CapsuleStateMachine {
 
-    // Define allowed transitions as a static Map<CapsuleStatus, Set<CapsuleStatus>>
-    // Built once at class load, never mutated
     private static final Map<CapsuleStatus, Set<CapsuleStatus>> ALLOWED = Map.of(
         CapsuleStatus.SEALED,   Set.of(UNLOCKED, DELETED, EXPIRED),
         CapsuleStatus.UNLOCKED, Set.of(OPENED, DELETED),
@@ -23,11 +21,6 @@ public class CapsuleStateMachine {
         CapsuleStatus.DELETED,  Set.of()
     );
 
-    /**
-     * Validates and applies a status transition to a capsule.
-     * Mutates capsule.status on success.
-     * Throws InvalidStateTransitionException on invalid transition.
-     */
     public void transition(Capsule capsule, CapsuleStatus to) {
         CapsuleStatus from = capsule.getStatus();
         if (!isValidTransition(from, to)) {

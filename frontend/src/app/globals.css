@@ -1,3 +1,62 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --background: #fcfaf7;
+  --foreground: #2d2a26;
+  --accent: #d4a373;
+  --secondary: #faedcd;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* The Paper Grain Texture Overlay */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.15;
+  background-image: url("https://www.transparenttextures.com/patterns/natural-paper.png");
+}
+
+.paper-shadow {
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.1), 0 2px 10px -2px rgba(0, 0, 0, 0.05);
+}
+
+.ink-bleed {
+  filter: blur(0.2px) contrast(1.1);
+}
+
+/* Custom Utilities */
+.text-whimsical {
+  letter-spacing: -0.02em;
+}
+
+.card-stack-effect {
+  position: relative;
+}
+
+.card-stack-effect::after {
+  content: "";
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  right: -8px;
+  bottom: -8px;
+  background: var(--secondary);
+  border: 1px solid rgba(0,0,0,0.1);
+  z-index: -1;
+  border-radius: 8px;
+}

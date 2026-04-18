@@ -1,7 +1,11 @@
 package com.capsule.config;
 
 import com.capsule.dto.ErrorResponse;
-import com.capsule.exception.*;
+import com.capsule.exception.AccessDeniedException;
+import com.capsule.exception.CapsuleNotFoundException;
+import com.capsule.exception.InvalidStateTransitionException;
+import com.capsule.exception.RateLimitExceededException;
+import com.capsule.exception.StorageQuotaExceededException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -43,6 +47,11 @@ public class GlobalExceptionHandler {
             .map(e -> e.getField() + ": " + e.getDefaultMessage())
             .collect(Collectors.joining(", "));
         return ResponseEntity.status(400).body(new ErrorResponse(message, "VALIDATION_ERROR"));
+    }
+
+    @ExceptionHandler(org.springframework.web.servlet.NoHandlerFoundException.class)
+    public ResponseEntity<ErrorResponse> handleNotFoundException(org.springframework.web.servlet.NoHandlerFoundException ex) {
+        return ResponseEntity.status(404).body(new ErrorResponse("Endpoint not found", "NOT_FOUND"));
     }
 
     @ExceptionHandler(Exception.class)

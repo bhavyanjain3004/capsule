@@ -1,6 +1,5 @@
 package com.capsule.filter;
 
-import com.capsule.repository.CapsuleFileRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,9 +17,6 @@ public class RateLimitFilter extends OncePerRequestFilter {
 
     @Autowired
     private StringRedisTemplate redis;
-
-    @Autowired
-    private CapsuleFileRepository fileRepository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,

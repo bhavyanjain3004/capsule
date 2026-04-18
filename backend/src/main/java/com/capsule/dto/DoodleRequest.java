@@ -1,14 +1,5 @@
 package com.capsule.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class DoodleRequest {
     private String type;
     private String stickerId;
@@ -17,6 +8,19 @@ public class DoodleRequest {
     private Double positionY;
     private Double scale;
     private Double rotation;
+
+    public DoodleRequest() {}
+
+    public DoodleRequest(String type, String stickerId, String svgData, 
+                        Double positionX, Double positionY, Double scale, Double rotation) {
+        this.type = type;
+        this.stickerId = stickerId;
+        this.svgData = svgData;
+        this.positionX = positionX;
+        this.positionY = positionY;
+        this.scale = scale;
+        this.rotation = rotation;
+    }
 
     public String getType() { return type; }
     public String getStickerId() { return stickerId; }

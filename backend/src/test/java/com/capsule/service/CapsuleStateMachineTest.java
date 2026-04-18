@@ -2,7 +2,6 @@ package com.capsule.service;
 
 import com.capsule.exception.InvalidStateTransitionException;
 import com.capsule.model.Capsule;
-import com.capsule.model.CapsuleStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
