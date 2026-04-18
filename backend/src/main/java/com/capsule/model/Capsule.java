@@ -82,4 +82,13 @@ public class Capsule {
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
     }
+
+    // Manual getter/setter to resolve Lombok issues with newer Java versions
+    public CapsuleStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(CapsuleStatus status) {
+        this.status = status;
+    }
 }
