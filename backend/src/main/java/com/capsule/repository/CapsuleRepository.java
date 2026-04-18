@@ -17,5 +17,7 @@ public interface CapsuleRepository extends JpaRepository<Capsule, Long> {
 
     List<Capsule> findByCreatorEmail(String email);
 
+    List<Capsule> findByStatusAndUnlockAtBefore(CapsuleStatus status, LocalDateTime now);
+
     List<Capsule> findByStatusAndUnlockAtBeforeAndDeletedAtIsNull(CapsuleStatus status, LocalDateTime now);
 }
